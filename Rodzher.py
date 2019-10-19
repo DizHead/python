@@ -56,7 +56,7 @@ if ready == 'да':
        else:
            print("Должна быть цифра")
 
-       for question in range(1, int(answers_quantity)):
+       for question in range(int(answers_quantity)):
            print("Пример " + str(question+1))
 
            # случайным образом сгенерируем
@@ -69,20 +69,21 @@ if ready == 'да':
                # исключим отрицательный ответ
                while numeric1 < numeric2:
                    numeric1 = randint(1, int(maximum_answer))
-                   correct_answer = numeric1 - numeric2
+
+               correct_answer = numeric1 - numeric2
            if sign == '+':
                # исключим превышение максимально допустимого ответа
                while numeric1 + numeric2 > int(maximum_answer):
-                   numeric1 = randint(1, int(maximum_answer))
-                   numeric2 = randint(1, int(maximum_answer))
-                   correct_answer = numeric1 + numeric2
+                   numeric1 = randint(1, int(maximum_answer))  # левый операнд
+                   numeric2 = randint(1, int(maximum_answer))  # правый операнд
+               correct_answer = numeric1 + numeric2
            print("сколько будет " + str(numeric1) +str(sign) +str(numeric2))
            student_answer = input()
-           if student_answer == correct_answer:
+           if int(student_answer) == correct_answer:
                print("Правильно,молодец!")
            else:
                print("Неправильно")
-               print("Правильный ответ: " + correct_answer)
+               print("Правильный ответ: " + str(correct_answer))
 
 if ready == 'нет':
     print('''Передумал? Хорошо, может как-нибудь в следующий раз...
