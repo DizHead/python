@@ -1,7 +1,8 @@
 # Программа для автоматизации навыков счёта
-from timeit import default_timer
 from time import sleep
 from random import randint, choice
+from timeit import default_timer
+
 
 
 print('Привет! Меня зовут Роджер. А как тебя?')
@@ -26,6 +27,12 @@ if ready == 'да':
    answers_quantity = ''  # количество примеров
    maximum_answer = ''  # до скольки будет считать
    question = ''
+   correct_answers = 0
+   fails = 0
+   time_in_second = 0
+   start = default_timer()
+   stop = default_timer()
+
 
 
    while not answers_quantity.isdigit():
@@ -78,12 +85,28 @@ if ready == 'да':
                    numeric2 = randint(1, int(maximum_answer))  # правый операнд
                correct_answer = numeric1 + numeric2
            print("сколько будет " + str(numeric1) +str(sign) +str(numeric2))
+
            student_answer = input()
+
+           while not student_answer.isdigit():
+               print("Должна быть цифра")
+               student_answer = input()
+
+
            if int(student_answer) == correct_answer:
                print("Правильно,молодец!")
+               correct_answers += 1
            else:
                print("Неправильно")
                print("Правильный ответ: " + str(correct_answer))
+               fails += 1
+   if fails == 0:
+       print(f"Молодец, {name}, ты правильно ответил на все вопросы")
+   elif correct_answer == 0:
+       print("Ты не ответил ни на один вопрос правильно")
+   else:
+       print("Правильных ответов:" + str(correct_answer))
+       print(f"Ошибок {fails}")
 
 if ready == 'нет':
     print('''Передумал? Хорошо, может как-нибудь в следующий раз...
