@@ -29,9 +29,10 @@ if ready == 'да':
    question = ''
    correct_answers = 0
    fails = 0
-   time_in_second = 0
-   start = default_timer()
-   stop = default_timer()
+   time_in_seconds = 0
+   seconds = 0
+   minutes = 0
+
 
 
 
@@ -43,7 +44,7 @@ if ready == 'да':
            while int(answers_quantity) < 1:
                print ("Введи число больше 0")
                answers_quantity = input()
-               while not maximum_answer.isdigit():
+               while not answers_quantity.isdigit():
                    print("Должна быть цифра")
                    answers_quantity = input()
        else:
@@ -86,7 +87,11 @@ if ready == 'да':
                correct_answer = numeric1 + numeric2
            print("сколько будет " + str(numeric1) +str(sign) +str(numeric2))
 
+           start = default_timer()
            student_answer = input()
+           stop = default_timer()
+
+           time_in_seconds += round(stop - start)
 
            while not student_answer.isdigit():
                print("Должна быть цифра")
@@ -100,6 +105,19 @@ if ready == 'да':
                print("Неправильно")
                print("Правильный ответ: " + str(correct_answer))
                fails += 1
+
+   if time_in_seconds < 60:
+       spend_time = f"Ты справился за {time_in_seconds} секунд"
+   else:
+       minutes = time_in_seconds // 60
+       seconds = time_in_seconds - (minutes * 60)
+
+       if seconds > 0:
+           spend_time = f"Ты справился за {minutes} минут и {seconds} секунд"
+
+
+
+
    if fails == 0:
        print(f"Молодец, {name}, ты правильно ответил на все вопросы")
    elif correct_answer == 0:
