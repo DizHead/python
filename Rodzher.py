@@ -4,6 +4,19 @@ from random import randint, choice
 from timeit import default_timer
 
 
+def time_endings(digit):
+    digit = str(digit)
+    last_digit = digit[-1]
+
+    if digit == 11:
+        return ''
+    else:
+        if last_digit == 1:
+            return 'у'
+        elif 1<last_digit<5:
+            return 'ы'
+        else:
+            return ''
 
 print('Привет! Меня зовут Роджер. А как тебя?')
 name = input()
@@ -107,24 +120,23 @@ if ready == 'да':
                fails += 1
 
    if time_in_seconds < 60:
-       spend_time = f"Ты справился за {time_in_seconds} секунд"
+       spend_time = f"{time_in_seconds} секунд{time_endings(time_in_seconds)}"
    else:
        minutes = time_in_seconds // 60
        seconds = time_in_seconds - (minutes * 60)
 
        if seconds > 0:
-           spend_time = f"Ты справился за {minutes} минут и {seconds} секунд"
-
-
-
+           spend_time = f"{minutes} минут и {seconds} секунд"
 
    if fails == 0:
-       print(f"Молодец, {name}, ты правильно ответил на все вопросы")
-   elif correct_answer == 0:
-       print("Ты не ответил ни на один вопрос правильно")
+       print(f"Молодец, {name}, ты правильно ответил на все вопросы за {spend_time}.")
+   elif correct_answers == 0:
+       print(f"Ты не ответил ни на один вопрос правильно, затратив на это {spend_time}")
    else:
-       print("Правильных ответов:" + str(correct_answer))
+       print("Правильных ответов:" + str(correct_answers))
        print(f"Ошибок {fails}")
+       print(f"Ты ответил за {spend_time}")
+
 
 if ready == 'нет':
     print('''Передумал? Хорошо, может как-нибудь в следующий раз...
