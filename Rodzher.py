@@ -1,8 +1,8 @@
 # Программа для автоматизации навыков счёта
-from time import sleep
 from random import randint, choice
+from time import sleep
 from timeit import default_timer
-
+import os
 
 def time_endings(digit):
     digit = str(digit)
@@ -20,30 +20,34 @@ def time_endings(digit):
 
 def select_mode():
     mode = ''
+    if not os.path.exists(f'{name}_errors.txt'):
+        print('''Выбери режим
+            1 = Тренировка
+             0 = Выход''')
 
-    print('''Выбери режим
-        1 = Тренировка
-        0 = Выход''')
-
-    mode = input()
-
-    while mode not in {'0', '1'}:
-        print("Нужно написать 0 или 1")
         mode = input()
+
+        while mode not in {'0', '1' , '2'}:
+            print("Нужно написать 0,1 или 2")
+            mode = input()
+
+    else:
+
+        print('''Выбери режим
+            1 = Тренировка
+            2 = Исправление ошибок
+            0 = Выход''')
+        mode = input()
+
+        while mode not in {'0', '1' , '2'}:
+            print("Нужно написать 0,1 или 2")
+            mode = input()
 
     return mode
 
 
-
-
 def count():
 
-    print('Привет! Меня зовут Роджер. А как тебя?')
-    name = input()
-    name = name.title()
-
-    print('Приятно познакомиться, ' + name)
-    sleep(1)
     print('Давай проверим твои знания в математике.')
     sleep(1)
 
@@ -125,8 +129,8 @@ def count():
                 print("Неправильно")
                 print("Правильный ответ: " + str(correct_answer))
                 fails += 1
-                with open(f'{name}errors.txt','а') as f:
-                    f.write('{number 1}{sign}{number 2} 3')
+                with open(f'{name}_errors.txt', 'a')as f:
+                    f.write(f'{numeric1} {sign} {numeric2} 3\n')
 
     if time_in_seconds < 60:
         spend_time = f"{time_in_seconds} секунд{time_endings(time_in_seconds)}"
@@ -146,6 +150,21 @@ def count():
         print(f"Ошибок {fails}")
         print(f"Ты ответил за {spend_time}")
 
+def fix_errors():
+    with open(f'{name}_errors.txt', 'r')as f2:
+        line = f2.readline()
+
+
+
+
+# Основной блок программы
+print('Привет! Меня зовут Роджер. А как тебя?')
+name = input()
+name = name.title()
+
+print('Приятно познакомиться, ' + name)
+sleep(1)
+
 while True:
 
     mode = select_mode()
@@ -154,6 +173,8 @@ while True:
         count()
     elif mode == '0':
         break
+    elif mode == '2':
+        fix_errors()
     else:
         pass
 
