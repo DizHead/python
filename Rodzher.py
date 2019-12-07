@@ -48,6 +48,9 @@ def select_mode():
 
 def count():
 
+    my_warnings = ['Неправильно!', 'Неправильный ответ', 'Ошибочка', 'Ну как так?', 'Не-а', 'Два в журнал!']
+
+
     print('Давай проверим твои знания в математике.')
     sleep(1)
 
@@ -126,7 +129,7 @@ def count():
                 print("Правильно,молодец!")
                 correct_answers += 1
             else:
-                print("Неправильно")
+                print(my_warnings[randint(0, len(my_warnings)-1)])
                 print("Правильный ответ: " + str(correct_answer))
                 fails += 1
                 with open(f'{name}_errors.txt', 'a')as f:
@@ -153,6 +156,25 @@ def count():
 def fix_errors():
     with open(f'{name}_errors.txt', 'r')as f2:
         line = f2.readline()
+        splited = line.split()
+        number1, sigh, number2, repeat = splited
+        number1 = int(number1)
+        number2 = int(number2)
+        print(f"{number1} {sigh} {number2}")
+        answer = input()
+
+        if sign == '-':
+            # исключим отрицательный ответ
+            while number1 < number2:
+                number1 = randint(1, int(maximum_answer))
+                correct_answer = number1 - number2
+        if sign == '+':
+            # исключим превышение максимально допустимого ответа
+            while number1 + number2 > int(maximum_answer):
+                number1 = randint(1, int(maximum_answer))  # левый операнд
+                number2 = randint(1, int(maximum_answer))  # правый операнд
+            correct_answer = number1 + number2
+maximum_answer = ''
 
 
 
