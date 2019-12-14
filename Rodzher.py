@@ -23,7 +23,7 @@ def select_mode():
     if not os.path.exists(f'{name}_errors.txt'):
         print('''Выбери режим
             1 = Тренировка
-             0 = Выход''')
+            0 = Выход''')
 
         mode = input()
 
@@ -154,28 +154,37 @@ def count():
         print(f"Ты ответил за {spend_time}")
 
 def fix_errors():
-    with open(f'{name}_errors.txt', 'r')as f2:
-        line = f2.readline()
-        splited = line.split()
-        number1, sigh, number2, repeat = splited
-        number1 = int(number1)
-        number2 = int(number2)
-        print(f"{number1} {sigh} {number2}")
-        answer = input()
 
-        if sign == '-':
-            # исключим отрицательный ответ
-            while number1 < number2:
-                number1 = randint(1, int(maximum_answer))
+    with open(f'{name}_errors.txt', 'r') as f, open(f'tmp_{name}_errors.txt', 'a') as f2:
+
+        line = f.readline()
+        while line:
+            splited = line.split()
+            number1, sign, number2, repeat = splited
+            number1 = int(number1)
+            number2 = int(number2)
+            print(f"{number1} {sign} {number2}")
+
+            if sign == '-':
                 correct_answer = number1 - number2
-        if sign == '+':
-            # исключим превышение максимально допустимого ответа
-            while number1 + number2 > int(maximum_answer):
-                number1 = randint(1, int(maximum_answer))  # левый операнд
-                number2 = randint(1, int(maximum_answer))  # правый операнд
-            correct_answer = number1 + number2
-maximum_answer = ''
 
+            if sign == '+':
+                correct_answer = number1 + number2
+
+            answer = int(input())
+
+            if answer == correct_answer:
+                print("Правильно")
+                if int(repeat) > 1:
+                    f2.write(f'{number1} {sign} {number2} {int(repeat)-1}\n')
+            else:
+                print("Неправильно")
+                f2.write(f'{number1} {sign} {number2} {repeat}\n')
+
+            line = f.readline()
+
+    os.remove(f'{name}_errors.txt')
+    os.rename(f'tmp_{name}_errors.txt',f'{name}_errors.txt')
 
 
 
