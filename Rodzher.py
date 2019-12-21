@@ -23,6 +23,7 @@ def select_mode():
     if not os.path.exists(f'{name}_errors.txt'):
         print('''Выбери режим
             1 = Тренировка
+            2 = Настройки
             0 = Выход''')
 
         mode = input()
@@ -36,11 +37,12 @@ def select_mode():
         print('''Выбери режим
             1 = Тренировка
             2 = Исправление ошибок
+            3 = Настройки
             0 = Выход''')
         mode = input()
 
-        while mode not in {'0', '1' , '2'}:
-            print("Нужно написать 0,1 или 2")
+        while mode not in {'0', '1' , '2' , '3'}:
+            print("Требуется написать 0,1,2 или 3")
             mode = input()
 
     return mode
@@ -154,39 +156,44 @@ def count():
         print(f"Ты ответил за {spend_time}")
 
 def fix_errors():
+     file = f'{name}_errors.txt'
+     tmp_file = f'tmp_{name}_errors.txt'
 
-    with open(f'{name}_errors.txt', 'r') as f, open(f'tmp_{name}_errors.txt', 'a') as f2:
+     if os.path.exists(file):
 
-        line = f.readline()
-        while line:
-            splited = line.split()
-            number1, sign, number2, repeat = splited
-            number1 = int(number1)
-            number2 = int(number2)
-            print(f"{number1} {sign} {number2}")
+        with open(file, 'r') as f, open(tmp_file, 'a') as f2:
 
-            if sign == '-':
-                correct_answer = number1 - number2
+            for line in f:
+                splited = line.split()
+                number1, sign, number2, repeat = splited
+                number1 = int(number1)
+                number2 = int(number2)
+                print(f"{number1} {sign} {number2}")
 
-            if sign == '+':
-                correct_answer = number1 + number2
+                if sign == '-':
+                    correct_answer = number1 - number2
 
-            answer = int(input())
+                if sign == '+':
+                    correct_answer = number1 + number2
 
-            if answer == correct_answer:
-                print("Правильно")
-                if int(repeat) > 1:
-                    f2.write(f'{number1} {sign} {number2} {int(repeat)-1}\n')
-            else:
-                print("Неправильно")
-                f2.write(f'{number1} {sign} {number2} {repeat}\n')
+                answer = int(input())
 
-            line = f.readline()
+                if answer == correct_answer:
+                    print("Правильно")
+                    if int(repeat) > 1:
+                        f2.write(f'{number1} {sign} {number2} {int(repeat)-1}\n')
+                else:
+                    print("Неправильно")
+                    f2.write(f'{number1} {sign} {number2} {repeat}\n')
 
-    os.remove(f'{name}_errors.txt')
-    os.rename(f'tmp_{name}_errors.txt',f'{name}_errors.txt')
+        os.remove(file)
+        if os.path.exists(tmp_file):
+            os.rename(tmp_file, file)
+        if os.path.getsize(file) <1:
+            os.remove(file)
 
 
+def settings():
 
 # Основной блок программы
 print('Привет! Меня зовут Роджер. А как тебя?')
@@ -206,6 +213,10 @@ while True:
         break
     elif mode == '2':
         fix_errors()
+        if os.path.exists():
+            settings()
+    elif mode == '3':
+        settings()
     else:
         pass
 
