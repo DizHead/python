@@ -64,6 +64,10 @@ def count():
     time_in_seconds = 0
     seconds = 0
     minutes = 0
+    unique_examples = []
+    example_number = 0
+
+
 
 
     while not answers_quantity.isdigit():
@@ -94,8 +98,10 @@ def count():
         else:
             print("Должна быть цифра")
 
-        for question in range(int(answers_quantity)):
-            print("Пример " + str(question + 1))
+    col_unique_examples = int(maximum_answer)**2
+
+    while example_number < col_unique_examples:
+        for i in range(int(answers_quantity)):
 
             # случайным образом сгенерируем
             numeric1 = randint(1, int(maximum_answer))  # левый операнд
@@ -115,27 +121,36 @@ def count():
                     numeric1 = randint(1, int(maximum_answer))  # левый операнд
                     numeric2 = randint(1, int(maximum_answer))  # правый операнд
                 correct_answer = numeric1 + numeric2
-            print("сколько будет " + str(numeric1) + str(sign) + str(numeric2))
 
-            start = default_timer()
-            student_answer = input()
-            stop = default_timer()
+                example = f"{numeric1} {sign} {numeric2}"
+                if example not in unique_examples:
+                    unique_examples.append(example)
+                    example_number +=1
 
-            time_in_seconds += round(stop - start)
+                    print(f"Пример + {example_number}")
 
-            while not student_answer.isdigit():
-                print("Должна быть цифра")
-                student_answer = input()
 
-            if int(student_answer) == correct_answer:
-                print("Правильно,молодец!")
-                correct_answers += 1
-            else:
-                print(my_warnings[randint(0, len(my_warnings)-1)])
-                print("Правильный ответ: " + str(correct_answer))
-                fails += 1
-                with open(f'{name}_errors.txt', 'a')as f:
-                    f.write(f'{numeric1} {sign} {numeric2} 3\n')
+                    print(f"сколько будет {example}")
+
+                    start = default_timer()
+                    student_answer = input()
+                    stop = default_timer()
+
+                    time_in_seconds += round(stop - start)
+
+                    while not student_answer.isdigit():
+                        print("Должна быть цифра")
+                        student_answer = input()
+
+                    if int(student_answer) == correct_answer:
+                        print("Правильно,молодец!")
+                        correct_answers += 1
+                    else:
+                        print(my_warnings[randint(0, len(my_warnings)-1)])
+                        print("Правильный ответ: " + str(correct_answer))
+                        fails += 1
+                        with open(f'{name}_errors.txt', 'a')as f:
+                            f.write(f'{numeric1} {sign} {numeric2} 3\n')
 
     if time_in_seconds < 60:
         spend_time = f"{time_in_seconds} секунд{time_endings(time_in_seconds)}"
@@ -189,13 +204,13 @@ def fix_errors():
         os.remove(file)
         if os.path.exists(tmp_file):
             os.rename(tmp_file, file)
-        if os.path.getsize(file) <1:
+        if os.path.getsize(file)<1:
             os.remove(file)
 
 
-def settings():
 
-# Основной блок программы
+
+#Основной блок программы
 print('Привет! Меня зовут Роджер. А как тебя?')
 name = input()
 name = name.title()
