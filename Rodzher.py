@@ -4,6 +4,31 @@ from time import sleep
 from timeit import default_timer
 import os
 
+def select_enterance_type():
+    taip = ''
+    
+    print('''Ты хочешь авторизироваться или зарегестрироваться?
+        1 = Авторизация
+        2 = Регистрация
+        0 = Выход''')
+
+    taip = input()
+
+    while taip not in {'0', '1' , '2'}:
+        print("Нужно написать 0,1 или 2")
+        taip = input()
+
+    return taip
+
+
+def register():
+    print("Регистрация")
+
+
+def login():
+    print("Авторизация")
+
+
 def time_endings(digit):
     digit = str(digit)
     last_digit = digit[-1]
@@ -148,7 +173,7 @@ def count():
                                 print("Должна быть цифра")
                                 student_answer = input()
 
-                            if int(student_answer) == correct_answer:
+                            if student_answer == str(correct_answer):
                                 print("Правильно,молодец!")
                                 correct_answers += 1
                             else:
@@ -221,16 +246,34 @@ def fix_errors():
 
 
 def settings():
-    file = settings
+    file_name = f'{name}_{password}_settings.json'
 
-    if os.path.exists(file):
-        with open(file, 'r') as f:
+    if not  os.path.exists(file_name):
+        print("Неправильное имя или пароль! Попробуй еще раз")
+    
+
+    if os.path.exists(file_name):
+        with open(file_name, 'r') as f:
             pass
 
 #Основной блок программы
-print('Привет! Меня зовут Роджер. А как тебя?')
+print("Привет, меня зовут Роджер!")
+
+enterance_type = select_enterance_type()
+
+if enterance_type == '1':
+    login()
+else:
+    register()
+
+
+
 name = input()
 name = name.title()
+password = input('Введи пароль')
+
+settings()
+
 
 print('Приятно познакомиться, ' + name)
 sleep(1)
