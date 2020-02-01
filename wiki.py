@@ -1,6 +1,10 @@
 import wikipedia
 wikipedia.set_lang("ru")
 
-search = input("Что найти?\n")
-w = wikipedia.page(search)
-print(w.content)
+while True:
+
+    search = input("Что найти?\n")
+    if search == "стоп": 
+        break
+    w = wikipedia.page(search)
+    print(w.content)
