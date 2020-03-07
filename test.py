@@ -8,7 +8,7 @@ for a in range(10):
 
 
     with open(filename, 'w') as f:
-        f.write('НУ вот ты и попался, когда 561,3 рубля вернешь?')
+        f.write('ok,boomer')
 
 
 

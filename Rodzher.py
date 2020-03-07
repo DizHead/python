@@ -3,30 +3,38 @@ from random import randint, choice
 from time import sleep
 from timeit import default_timer
 import os
+import json
 
-def select_enterance_type():
-    taip = ''
+def enterance():
+    users_file_name =  'users.json'
+    if not os.path.exists(users_file_name):
+        with open(users_file_name, 'w') as f:
+            users_list = {}
+            json.dump(users_list, f)
+
+    with open(users_file_name, 'r', encoding='utf-8') as f2:
+        users_list = json.load(f2)
+                
+    login = input('Как вас зовут?\n')      
     
-    print('''Ты хочешь авторизироваться или зарегестрироваться?
-        1 = Авторизация
-        2 = Регистрация
-        0 = Выход''')
+    if login in users_list:
+        password = input('Введите пароль:\n')
+        if users_list[login] == password:
+            print('добро пожаловать!')
+            return login
+        else:
+            print('Неправильный пароль, попробуйте еще раз')
+            enterance()    
+    else:
+        password = input('Придумайте пароль:\n')
 
-    taip = input()
+        users_list[login] = password
 
-    while taip not in {'0', '1' , '2'}:
-        print("Нужно написать 0,1 или 2")
-        taip = input()
+        with open(users_file_name, 'w', encoding='utf-8') as f:
+            json.dump(users_list, f, ensure_ascii=False)
 
-    return taip
+        return login
 
-
-def register():
-    print("Регистрация")
-
-
-def login():
-    print("Авторизация")
 
 
 def time_endings(digit):
@@ -246,11 +254,11 @@ def fix_errors():
 
 
 def settings():
-    file_name = f'{name}_{password}_settings.json'
+    file_name = f'{name}_settings.json'
 
     if not  os.path.exists(file_name):
         print("Неправильное имя или пароль! Попробуй еще раз")
-    
+    #тут будут настройки(наверное)
 
     if os.path.exists(file_name):
         with open(file_name, 'r') as f:
@@ -259,23 +267,13 @@ def settings():
 #Основной блок программы
 print("Привет, меня зовут Роджер!")
 
-enterance_type = select_enterance_type()
+name = enterance()
 
-if enterance_type == '1':
-    login()
-else:
-    register()
-
-
-
-name = input()
-name = name.title()
-password = input('Введи пароль')
 
 settings()
 
 
-print('Приятно познакомиться, ' + name)
+print ('Приятно познакомиться, ' + name)
 sleep(1)
 
 while True:
