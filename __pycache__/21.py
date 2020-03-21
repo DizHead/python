@@ -1,7 +1,30 @@
-from random import shuffle
+from random import shuffle,choice
 
-cards = [2,3,4,5,6,7,8,9,10,10,10,10,11]*4
-shuffle(cards)
+def get_deck():
+    deck = []
+
+    for suit in ('трефы','червы', 'бубны','пики'):
+        for card in range(2, 11):
+            deck.append(f'{card} {suit}')
+        for card in ('Валет','Дама','Король','Туз'):
+            deck.append(f'{card} {suit}')
+
+    shuffle(deck)
+    return deck
+
+def get_cpoints(card):
+    card_name = card.split
+    cpoints = {}
+
+    for card_point in range(2, 11):
+        cpoints[f'{card_point}'] = card_point
+    for card_point in ('Валет','Дама','Король',):
+        cpoints[f'{card_point}'] = 10
+    cpoints['Туз'] = choice([1,11])
+
+    return cpoints[card_name[0]]
+
+   
 
 ypoints = 0
 dpoints = 0
